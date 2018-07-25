@@ -12,6 +12,7 @@ class ArticlesTable extends Table
         parent::initialize($config);
 
         $this->addBehavior('Timestamp');
+        $this->belongsToMany('Tags');
     }
 
     public function beforeSave($event, $entity, $options)

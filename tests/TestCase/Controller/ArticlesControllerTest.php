@@ -45,25 +45,57 @@ class ArticlesControllerTest extends IntegrationTestCase
         $this->enableCsrfToken();
         $this->enableSecurityToken();
         $data = [
-//            'user_id' => 1,
-//            'published' => 1,
-            'title' => 'Lorem ipsum teste teste',
-            'body' => 'Teste asdfsdf sdfs dfsdf',
+            'title' => 'The new article',
+            'body' => 'The amazing body',
             'user_id' => 1
         ];
         $this->post(['controller'=>'Articles','action'=>'add'], $data);
         $this->assertPostConditions();
 
         $query = $this->Articles->find('all');
-
         $this->assertEquals(1, $query->count());
 
-//        $this->get('/articles');
-//        $this->assertResponseContains('New Body');
+        $this->get('/articles');
+        $this->assertResponseContains('The new article');
 
-//
     }
 
+    /** @test */
+    public function show_only_published_articles()
+    {
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $data = [
+            [
+                'title' => 'First article',
+                'body' => 'First article body',
+                'user_id' => 1,
+                'published' => 1
+            ],
+            [
+                'title' => 'Second article',
+                'body' => 'Second article body',
+                'user_id' => 1,
+                'published' => 0
+            ],
+            [
+                'title' => 'Third article',
+                'body' => 'Third article body',
+                'user_id' => 1,
+                'published' => 1
+            ],
+        ];
+
+        $entities = $this->Articles->newEntities($data);
+
+        $save = $this->Articles->saveMany($entities);
+
+        $result = $this->Articles->find('published');
+
+        $this->assertEquals(2, count($result->toArray()));
+
+    }
 //    /**
 //     * Test view method
 //     *

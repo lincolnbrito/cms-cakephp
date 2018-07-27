@@ -64,6 +64,16 @@ class ArticlesTable extends Table
         return $query->group(['Articles.id']);
     }
 
+    public function findPublished(Query $query, $options)
+    {
+        $query->where([
+            $this->getAlias().'.published' => 1
+        ]);
+
+        return $query;
+    }
+
+
     protected function _buildTags($tagString)
     {
         $newTags = array_map('trim', explode(',', $tagString));
@@ -76,8 +86,6 @@ class ArticlesTable extends Table
 
         $query = $this->Tags->find()
             ->where(['Tags.title IN' => $newTags]);
-
-
 
         //remove existing tags from the list of new tags
         foreach($query->extract('title') as $existing) {

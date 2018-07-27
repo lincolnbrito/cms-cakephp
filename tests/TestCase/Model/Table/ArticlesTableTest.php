@@ -10,7 +10,6 @@ use Cake\TestSuite\TestCase;
  */
 class ArticlesTableTest extends TestCase
 {
-
     /**
      * Test subject
      *
@@ -28,6 +27,8 @@ class ArticlesTableTest extends TestCase
         'app.tags',
         'app.users'
     ];
+
+    public $autoFixtures = false;
 
     /**
      * setUp method
@@ -96,6 +97,8 @@ class ArticlesTableTest extends TestCase
     /** @test */
     public function find_published()
     {
+        $this->loadFixtures('Users', 'Articles', 'Tags');
+
         $query = $this->ArticlesTable->find('published',['fields'=>['id','title']]);
         $this->assertInstanceOf('Cake\ORM\Query', $query);
 

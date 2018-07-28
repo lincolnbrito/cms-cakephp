@@ -28,7 +28,7 @@ class ArticlesTableTest extends TestCase
         'app.users'
     ];
 
-    public $autoFixtures = false;
+//    public $autoFixtures = false;
 
     /**
      * setUp method
@@ -74,15 +74,16 @@ class ArticlesTableTest extends TestCase
 //        //$this->markTestIncomplete('Not implemented yet.');
 //    }
 //
-//    /**
-//     * Test validationDefault method
-//     *
-//     * @return void
-//     */
-//    public function testValidationDefault()
-//    {
-//        //$this->markTestIncomplete('Not implemented yet.');
-//    }
+
+    /** @test */
+    public function validation_default()
+    {
+        $article = $this->ArticlesTable->newEntity(['title' => 'Short', 'body' => 'A long long time ago']);
+        $this->assertNotEmpty($article->getError('title'));
+
+        $article = $this->ArticlesTable->newEntity(['title' => 'A logn long title ago', 'body' => 'short']);
+        $this->assertNotEmpty($article->getError('body'));
+    }
 //
 //    /**
 //     * Test findTagged method
@@ -97,14 +98,14 @@ class ArticlesTableTest extends TestCase
     /** @test */
     public function find_published()
     {
-        $this->loadFixtures('Users', 'Articles', 'Tags');
+//        $this->loadFixtures('Users', 'Articles', 'Tags');
 
-        $query = $this->ArticlesTable->find('published',['fields'=>['id','title']]);
+        $query = $this->ArticlesTable->find('published', ['fields' => ['id', 'title']]);
         $this->assertInstanceOf('Cake\ORM\Query', $query);
 
         $article = $this->ArticlesTable->newEntity();
         $article->user_id = 1;
-        $this->ArticlesTable->patchEntity($article, ['title'=>'First Article', 'published'=>1]);
+        $this->ArticlesTable->patchEntity($article, ['title' => 'First Article', 'published' => 1]);
         $this->ArticlesTable->save($article);
 
         $result = $query->enableHydration(false)->toArray();
@@ -114,6 +115,5 @@ class ArticlesTableTest extends TestCase
 
         $this->assertEquals($expected, $result);
     }
-
 
 }

@@ -5,6 +5,30 @@ use App\Controller;
 
 class ArticlesController extends AppController
 {
+    public function initialize()
+    {
+        parent::initialize();
+        $this->Auth->allow(['tags']);
+    }
+
+    public function isAuthorized($user)
+    {
+        $action = $this->request->getParam('action');
+
+        if (in_array($action, ['add','tags'])) {
+            return true;
+        }
+
+        $slug = $this->request->getParam('pass.0');
+        if (!$slug) {
+            return false;
+        }
+
+        $article = $this->Articles->findBySlug($slug)->first();
+
+        return $article->user_id == $user['id'];
+    }
+
     public function index()
     {
         $this->loadComponent('Paginator');

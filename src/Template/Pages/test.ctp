@@ -1,1 +1,1 @@
-<h1><?= getenv('TESTE'); ?></h1>
+<h1><?= env('TESTE'); ?></h1>

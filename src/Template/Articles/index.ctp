@@ -20,7 +20,7 @@
           <?= $this->Form->postLink(
                   'Delete',
                   ['action' => 'delete', $article->slug],
-                  ['confirm' => 'Are you sure?']
+                  ['confirm' => 'Are you sure?','inline'=>false]
               )
           ?>
         </td>

@@ -80,6 +80,68 @@ class ArticlesControllerTest extends IntegrationTestCase
     }
 
     /** @test */
+    public function a_user_can_not_delete_another_article_user()
+    {
+        $this->session([
+            'Auth' => [
+                'User' => [
+                    'id' => 1
+                ]
+            ]
+        ]);
+
+        $data = [
+            'title' => 'First article',
+            'body' => 'First article body',
+            'user_id' => 2,
+            'published' => 1
+        ];
+
+
+        $entity = $this->Articles->newEntity($data);
+        $save = $this->Articles->save($entity);
+
+        $this->delete("/articles/delete/{$entity->slug}");
+        $this->assertResponseCode(403);
+
+    }
+
+    /** @test */
+    public function a_user_can_only_delete_own_article()
+    {
+        // Fake out SSL connections.
+        $this->configRequest([
+            'environment' => ['HTTPS' => 'on']
+        ]);
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $this->session([
+            'Auth' => [
+                'User' => [
+                    'id' => 1
+                ]
+            ]
+        ]);
+
+        $data = [
+            'title' => 'first article',
+            'body' => 'First article body',
+            'user_id' => 1,
+            'published' => 1
+        ];
+
+
+        $entity = $this->Articles->newEntity($data);
+        $save = $this->Articles->save($entity);
+
+        $this->delete("/articles/delete/{$save->slug}");
+        $this->assertResponseCode(200);
+//        $this->assertResponseContains("The {$entity->title} article has been deleted.");
+
+    }
+
+    /** @test */
     public function show_only_published_articles()
     {
         $this->enableCsrfToken();

@@ -49,6 +49,7 @@ class ArticlesTableTest extends TestCase
      */
     public function tearDown()
     {
+        unset($this->ArticlesTable->Tags);
         unset($this->ArticlesTable);
 
         parent::tearDown();

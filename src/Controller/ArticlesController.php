@@ -32,7 +32,7 @@ class ArticlesController extends AppController
     public function index()
     {
         $this->loadComponent('Paginator');
-        $articles = $this->Paginator->paginate($this->Articles->find());
+        $articles = $this->Paginator->paginate($this->Articles->find('all')->where(['published'=>1]));
         $this->set(compact('articles'));
     }
 

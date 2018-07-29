@@ -19,7 +19,7 @@ class ArticlesControllerTest extends IntegrationTestCase
      */
     public $fixtures = [
         'app.articles',
-        'app.tags',
+        //'app.tags',
         'app.users'
     ];
 
@@ -40,7 +40,7 @@ class ArticlesControllerTest extends IntegrationTestCase
     }
 
     /** @test */
-    public function a_user_can_create_articles()
+    public function an_unautheticated_user_can_not_create_articles()
     {
         $this->enableCsrfToken();
         $this->enableSecurityToken();
@@ -50,14 +50,33 @@ class ArticlesControllerTest extends IntegrationTestCase
             'user_id' => 1
         ];
         $this->post(['controller'=>'Articles','action'=>'add'], $data);
-        $this->assertPostConditions();
+        $this->assertRedirect(['controller'=>'Users', 'action'=>'login']);
+    }
 
-        $query = $this->Articles->find('all');
-        $this->assertEquals(1, $query->count());
+    /** @test */
+    public function an_authenticated_user_can_create_an_article()
+    {
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->session([
+            'Auth' => [
+                'User' => [
+                    'id' => 1
+                ]
+            ]
+        ]);
+
+        $data = [
+            'title' => 'The new article',
+            'body' => 'The amazing body',
+            'user_id' => 1
+        ];
+
+        $this->post(['controller'=>'Articles','action'=>'add'], $data);
+        $this->assertRedirect(['controller'=>'Articles', 'action'=>'index']);
 
         $this->get('/articles');
         $this->assertResponseContains('The new article');
-
     }
 
     /** @test */
@@ -83,18 +102,17 @@ class ArticlesControllerTest extends IntegrationTestCase
                 'title' => 'Third article',
                 'body' => 'Third article body',
                 'user_id' => 1,
-                'published' => 1
+                'published' => 0
             ],
         ];
 
         $entities = $this->Articles->newEntities($data);
-
         $save = $this->Articles->saveMany($entities);
 
-        $result = $this->Articles->find('published');
-
-        $this->assertEquals(2, count($result->toArray()));
-
+        $this->get('/articles');
+        $this->assertResponseContains('First article');
+        $this->assertResponseNotContains('Third article');
+        $this->assertResponseNotContains('Second article');
     }
 //    /**
 //     * Test view method

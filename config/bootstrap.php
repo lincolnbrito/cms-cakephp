@@ -152,7 +152,7 @@ Security::setSalt(Configure::consume('Security.salt'));
 
 
 Log::setConfig('default', [
-    'engine' => 'ConsoleLog'
+    'engine' => 'Cake\Log\Engine\ConsoleLog'
 ]);
 
 /*

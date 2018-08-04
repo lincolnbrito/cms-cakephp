@@ -61,10 +61,7 @@ class Application extends BaseApplication
         EventManager::instance()->on(
             'Model.afterSave',
             function($event, $entity, $options){
-                Log::debug(
-                    'debug',
-                    "Nova entidade ".get_class($entity)." salva id:". $entity->_className
-                );
+                dd($event);
             }
         );
     }

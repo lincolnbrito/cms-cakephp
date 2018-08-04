@@ -17,8 +17,10 @@ namespace App;
 use Cake\Core\Configure;
 use Cake\Core\Exception\MissingPluginException;
 use Cake\Error\Middleware\ErrorHandlerMiddleware;
+use Cake\Event\EventManager;
 use Cake\Http\BaseApplication;
 use Cake\Http\Middleware\CsrfProtectionMiddleware;
+use Cake\Log\Log;
 use Cake\Routing\Middleware\AssetMiddleware;
 use Cake\Routing\Middleware\RoutingMiddleware;
 
@@ -55,6 +57,16 @@ class Application extends BaseApplication
         if (Configure::read('debug')) {
             //$this->addPlugin(\DebugKit\Plugin::class);
         }
+
+        EventManager::instance()->on(
+            'Model.afterSave',
+            function($event, $entity, $options){
+                Log::write(
+                    'info',
+                    "Nova entidade ".get_class($entity)." salva id:". $entity->_className
+                );
+            }
+        );
     }
 
     /**

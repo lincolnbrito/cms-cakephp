@@ -13,6 +13,11 @@ class CreateContacts extends AbstractMigration
     public function change()
     {
         $table = $this->table('contacts');
+        $table->addColumn('name', 'string', [
+            'default' => null,
+            'limit' => 100,
+            'null' => false,
+        ]);
         $table->create();
     }
 }

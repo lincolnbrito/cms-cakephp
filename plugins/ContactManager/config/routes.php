@@ -8,6 +8,7 @@ Router::plugin(
     ['path' => '/contact-manager'],
     function (RouteBuilder $routes) {
         $routes->get('/contacts', ['controller' => 'Contacts', 'action'=>'index']);
+        $routes->get('/contacts/add', ['controller' => 'Contacts', 'action'=>'add']);
         $routes->get('/contacts/:id', ['controller' => 'Contacts', 'action' => 'view']);
         $routes->put('/contacts/:id', ['controller' => 'Contacts', 'action' => 'update']);
         $routes->fallbacks(DashedRoute::class);

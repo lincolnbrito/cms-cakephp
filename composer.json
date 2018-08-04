@@ -27,14 +27,16 @@
     "autoload": {
         "psr-4": {
             "App\\": "src/",
-            "ContactManager\\": "./plugins/ContactManager/src/"
+            "ContactManager\\": "./plugins/ContactManager/src/",
+            "Activity\\": "./plugins/Activity/src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
             "App\\Test\\": "tests/",
             "Cake\\Test\\": "vendor/cakephp/cakephp/tests/",
-            "ContactManager\\Test\\": "./plugins/ContactManager/tests/"
+            "ContactManager\\Test\\": "./plugins/ContactManager/tests/",
+            "Activity\\Test\\": "./plugins/Activity/tests/"
         }
     },
     "scripts": {

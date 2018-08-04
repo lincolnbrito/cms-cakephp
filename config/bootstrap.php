@@ -199,3 +199,5 @@ Type::build('timestamp')
 //Inflector::rules('transliteration', ['/å/' => 'aa']);
 
 Plugin::load('ContactManager', ['bootstrap' => false, 'routes' => true]);
+
+Plugin::load('Activity', ['bootstrap' => false, 'routes' => true]);

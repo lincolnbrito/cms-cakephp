@@ -152,7 +152,7 @@ Security::setSalt(Configure::consume('Security.salt'));
 
 
 Log::setConfig('default', [
-    'engine' => 'Console'
+    'engine' => 'ConsoleLog'
 ]);
 
 /*

@@ -61,9 +61,9 @@ class Application extends BaseApplication
         EventManager::instance()->on(
             'Model.afterSave',
             function($event, $entity, $options){
-                Log::error('teste');
-                Log::debug('teste');
-                Log::write(0,'teste');
+                Log::error('log::error teste');
+                Log::debug('log::debug teste');
+                Log::write(0,'log::write teste');
             }
         );
     }

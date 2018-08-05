@@ -23,6 +23,7 @@ class Activity extends Entity
      * @var array
      */
     protected $_accessible = [
+        'user_id' => true,
         'model' => true,
         'foreign_key' => true
     ];

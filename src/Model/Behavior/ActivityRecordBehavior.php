@@ -4,6 +4,7 @@ namespace App\Model\Behavior;
 use \ArrayObject;
 use Cake\Datasource\EntityInterface;
 use Cake\Event\Event;
+use Cake\Http\Session;
 use Cake\ORM\Behavior;
 use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
@@ -41,9 +42,10 @@ class ActivityRecordBehavior extends Behavior
     }
 
     public function saveActivity($entity, $event){
-//        dd($event);
+        $user = (new Session())->read('Auth.User.id');
+        
         $activitiesTable = TableRegistry::getTableLocator()->get('Activities');
-        $activity = $activitiesTable->newEntity(['model'=>$this->_table->getAlias(),'foreign_key'=>$entity->id,'user_id'=>'']);
+        $activity = $activitiesTable->newEntity(['model'=>$this->_table->getAlias(),'foreign_key'=>$entity->id,'user_id'=>$user]);
         $activitiesTable->saveOrFail($activity);
     }
 }

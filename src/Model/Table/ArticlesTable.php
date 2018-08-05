@@ -13,6 +13,7 @@ class ArticlesTable extends Table
         parent::initialize($config);
 
         $this->addBehavior('Timestamp');
+        $this->addBehavior('ActivityRecord');
         $this->belongsToMany('Tags');
     }
 

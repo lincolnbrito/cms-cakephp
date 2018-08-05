@@ -13,6 +13,12 @@ use App\Controller\AppController;
 class TagsController extends AppController
 {
 
+    public function isAuthorized($user)
+    {
+        return true;
+    }
+
+
     /**
      * Index method
      *
